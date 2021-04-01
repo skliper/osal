@@ -302,6 +302,18 @@ endif(OSAL_BSP_INCLUDE_DIRECTORIES)
 include("${OSAL_BSP_SOURCE_DIR}/build_options.cmake" OPTIONAL)
 include("${OSAL_OS_SOURCE_DIR}/build_options.cmake" OPTIONAL)
 
+set_target_properties(osal PROPERTIES LINK_FLAGS "${UT_COVERAGE_LINK_FLAGS}")
+set_target_properties(osal_bsp PROPERTIES LINK_FLAGS "${UT_COVERAGE_LINK_FLAGS}")
+target_compile_options(osal PRIVATE
+    ${UT_COVERAGE_COMPILE_FLAGS}
+)
+target_compile_options(osal_bsp PRIVATE
+    ${UT_COVERAGE_COMPILE_FLAGS}
+)
+target_compile_options(osal_${OSAL_SYSTEM_OSTYPE}_impl PRIVATE
+    ${UT_COVERAGE_COMPILE_FLAGS}
+)
+
 #
 # UNIT TEST SUPPORT
 #
@@ -315,7 +327,7 @@ if (ENABLE_UNIT_TESTS)
     function(add_osal_ut_exe TGTNAME)
 
       add_executable(${TGTNAME} ${ARGN})
-      target_link_libraries(${TGTNAME} ut_assert osal)
+      target_link_libraries(${TGTNAME} ${UT_COVERAGE_LINK_FLAGS} ut_assert osal)
       add_test(${TGTNAME} ${TGTNAME})
       foreach(TGT ${INSTALL_TARGET_LIST})
         install(TARGETS ${TGTNAME} DESTINATION ${TGT}/${UT_INSTALL_SUBDIR})
