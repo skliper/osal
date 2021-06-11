@@ -60,11 +60,10 @@
  * simultaneously created by any given test case (it is reset when the
  * test is reset).
  *
- * Keep as a power of two, and actual number of bits is 8x this value
- * (Default value of 16 allows for up to 128 objects to be created in
- * a single test case, far more than anything I've seen yet)
+ * Keep as a power of two, and actual number of supported
+ * objects is 8x - 1 this value. Example: 8*32 - 1 = 255
  */
-#define OSAL_MAX_VALID_PER_TYPE 16
+#define OSAL_MAX_VALID_PER_TYPE 32
 
 typedef struct
 {
